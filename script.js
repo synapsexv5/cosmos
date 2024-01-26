@@ -1,22 +1,41 @@
-document.getElementById('browseBtn').addEventListener('click', () => {
-  const url = document.getElementById('url').value;
-  if (url) {
-    openWebsite(url);
-  }
-});
-
-function openWebsite(url) {
-  // Send message to service worker
-  navigator.serviceWorker.controller.postMessage({ action: 'openWebsite', url });
-}
-
-// Register service worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js')
-    .then(() => {
-      console.log('Service worker registered');
-    })
-    .catch((error) => {
-      console.error('Error registering service worker:', error);
+	// Function to create the iframe and handle URL input
+function createIframe() {
+    // Create the iframe element
+    const iframe = document.createElement('iframe');
+    iframe.style.width = '80%';  // Set the width of the iframe
+    iframe.style.height = '80%';  // Set the height of the iframe
+    iframe.style.borderRadius = '10px';  // Set the rounded corners
+ 
+    // Create the input element for URL
+    const urlInput = document.createElement('input');
+    urlInput.type = 'text';
+    urlInput.placeholder = 'Enter URL...';
+    urlInput.style.position = 'absolute';
+    urlInput.style.top = '10px';
+    urlInput.style.left = '10px';
+    urlInput.style.borderRadius = '10px';
+ 
+    // Add event listener to handle URL input
+    urlInput.addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            const url = event.target.value;
+            loadPage(url, iframe);
+        }
     });
+ 
+    // Append the iframe and input elements to the document body
+    document.body.appendChild(iframe);
+    document.body.appendChild(urlInput);
 }
+ 
+// Function to load the page in the iframe using a proxy
+function loadPage(url, iframe) {
+    // Create a proxy URL by appending the original URL to the proxy server URL
+    const proxyUrl = 'https://218.4.62.141' + encodeURIComponent(url);
+ 
+    // Set the src attribute of the iframe to the proxy URL
+    iframe.src = proxyUrl;
+}
+ 
+// Call the createIframe function to create the iframe and handle URL input
+createIframe();
